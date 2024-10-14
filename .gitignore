@@ -1,0 +1,4 @@
+*.o
+*.asm
+*.dmp
+*.vscode
