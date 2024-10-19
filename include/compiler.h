@@ -75,8 +75,8 @@ int Compile(const char * InFileName, const char * OutFileName);
 int RunProgram(const char * RunFileName);
 
 
-void JmpAnalyzeCompiler(spu * code, const char * command);
-void JmpAnalyzeRun(int cmd, spu * code);
+int JmpAnalyzeCompiler(spu * code, const char * command);
+int JmpAnalyzeRun(spu * code);
 
 int PushAnalyzeCompiler(spu * code, const char * command);
 int PushAnalyzeRun(spu * code);

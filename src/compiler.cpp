@@ -172,13 +172,6 @@ int RunProgram(const char * RunFileName)
                 PushAnalyzeRun(&code);
                 break;
 
-            case CMD_PUSHR:
-                cell = (double*)((size_t) code.reg + (size_t) *(code.array + code.ip + 1));
-                val1 = *cell;
-                STACK_PUSH(&code.stk, &val1);
-                code.ip += 2;
-                break;
-
             case CMD_POP:
                 STACK_POP(&code.stk);
                 code.ip++;
@@ -193,92 +186,25 @@ int RunProgram(const char * RunFileName)
                 break;
 
             case CMD_JMP:
-                code.ip = code.array[code.ip + 1];
+                JmpAnalyzeRun(&code);
                 break;
-
             case CMD_JA:
-                val1 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                val2 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                if (val2 > val1)
-                    code.ip = code.array[code.ip + 1];
-                else
-                {
-                    STACK_PUSH(&code.stk, &val2);
-                    STACK_PUSH(&code.stk, &val1);
-                    code.ip++;
-                }
+                JmpAnalyzeRun(&code);
                 break;
             case CMD_JB:
-                val1 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                val2 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                if (val2 < val1)
-                    code.ip = code.array[code.ip + 1];
-                else
-                {
-                    STACK_PUSH(&code.stk, &val2);
-                    STACK_PUSH(&code.stk, &val1);
-                    code.ip++;
-                }
+                JmpAnalyzeRun(&code);
                 break;
             case CMD_JAE:
-                val1 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                val2 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                if (val2 >= val1)
-                    code.ip = code.array[code.ip + 1];
-                else
-                {
-                    STACK_PUSH(&code.stk, &val2);
-                    STACK_PUSH(&code.stk, &val1);
-                    code.ip++;
-                }
+                JmpAnalyzeRun(&code);
                 break;
             case CMD_JBE:
-                val1 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                val2 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                if (val2 <= val1)
-                    code.ip = code.array[code.ip + 1];
-                else
-                {
-                    STACK_PUSH(&code.stk, &val2);
-                    STACK_PUSH(&code.stk, &val1);
-                    code.ip++;
-                }
+                JmpAnalyzeRun(&code);
                 break;
             case CMD_JE:
-                val1 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                val2 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                if (val2 == val1)
-                    code.ip = code.array[code.ip + 1];
-                else
-                {
-                    STACK_PUSH(&code.stk, &val2);
-                    STACK_PUSH(&code.stk, &val1);
-                    code.ip++;
-                }
+                JmpAnalyzeRun(&code);
                 break;
             case CMD_JNE:
-                val1 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                val2 = *(double*) (STACK_TOP(&code.stk));
-                STACK_POP(&code.stk);
-                if (val2 != val1)
-                    code.ip = code.array[code.ip + 1];
-                else
-                {
-                    STACK_PUSH(&code.stk, &val2);
-                    STACK_PUSH(&code.stk, &val1);
-                    code.ip++;
-                }
+                JmpAnalyzeRun(&code);
                 break;
             case CMD_ADD:
                 val1 = *(double*) (STACK_TOP(&code.stk));
@@ -357,21 +283,7 @@ int RunProgram(const char * RunFileName)
     fclose(RunFile);
 }
 
-void AsmDump(spu * code)
-{
-    fprintf(stdout, "ASM_SIZE = %d ASM_IP = %d\n", code->size, code->ip);
-
-    for (int i = 0; i < code->size; i++)    fprintf(stdout, "%2lg ", code->array[i]);
-
-    fprintf(stdout, "\n");
-
-    for (int i = 0; i < code->ip - 1; i++)  fprintf(stdout, " ");
-
-    fprintf(stdout, " ^");
-    getchar();
-}
-
-void JmpAnalyzeCompiler(spu * code, const char * command)
+int JmpAnalyzeCompiler(spu * code, const char * command)
 {
     char func[DEF_SIZE] = "";
     double val = 0;
@@ -379,6 +291,88 @@ void JmpAnalyzeCompiler(spu * code, const char * command)
     sscanf(command, "%s %lg", func, &val);
     code->array[code->ip++] = CommandToEnum(func);
     code->array[code->ip++] = val;
+    return 0;
+}
+
+int JmpAnalyzeRun(spu * code)
+{
+    BEGIN_CHECK
+    double val1 = 0;
+    double val2 = 0;
+    if (code->array[code->ip] != CMD_JMP)
+    {
+        val1 = *(double*) (STACK_TOP(&code->stk));
+        STACK_POP(&code->stk);
+        val2 = *(double*) (STACK_TOP(&code->stk));
+        STACK_POP(&code->stk);
+    }
+    switch ((int) code->array[code->ip])
+    {
+        case CMD_JMP:
+            code->ip = code->array[code->ip + 1];
+            break;
+        case CMD_JA:
+            if (val2 > val1) code->ip = code->array[code->ip + 1];
+            else
+            {
+                STACK_PUSH(&code->stk, &val2);
+                STACK_PUSH(&code->stk, &val1);
+                code->ip++;
+            }
+            break;
+
+            case CMD_JB:
+            if (val2 < val1) code->ip = code->array[code->ip + 1];
+            else
+            {
+                STACK_PUSH(&code->stk, &val2);
+                STACK_PUSH(&code->stk, &val1);
+                code->ip++;
+            }
+            break;
+
+            case CMD_JE:
+            if (val2 == val1) code->ip = code->array[code->ip + 1];
+            else
+            {
+                STACK_PUSH(&code->stk, &val2);
+                STACK_PUSH(&code->stk, &val1);
+                code->ip++;
+            }
+            break;
+
+            case CMD_JAE:
+            if (val2 >= val1) code->ip = code->array[code->ip + 1];
+            else
+            {
+                STACK_PUSH(&code->stk, &val2);
+                STACK_PUSH(&code->stk, &val1);
+                code->ip++;
+            }
+            break;
+
+            case CMD_JBE:
+            if (val2 <= val1) code->ip = code->array[code->ip + 1];
+            else
+            {
+                STACK_PUSH(&code->stk, &val2);
+                STACK_PUSH(&code->stk, &val1);
+                code->ip++;
+            }
+            break;
+
+            case CMD_JNE:
+            if (val2 != val1) code->ip = code->array[code->ip + 1];
+            else
+            {
+                STACK_PUSH(&code->stk, &val2);
+                STACK_PUSH(&code->stk, &val1);
+                code->ip++;
+            }
+            break;
+    }
+
+    return 0;
 }
 
 int PushAnalyzeCompiler(spu * code, const char * command)
@@ -486,6 +480,20 @@ double GetArgPush(spu * code)
     if (ArgType & 4) result = code->RAM[(int) result];
 
     return result;
+}
+
+void AsmDump(spu * code)
+{
+    fprintf(stdout, "ASM_SIZE = %d ASM_IP = %d\n", code->size, code->ip);
+
+    for (int i = 0; i < code->size; i++)    fprintf(stdout, "%2lg ", code->array[i]);
+
+    fprintf(stdout, "\n");
+
+    for (int i = 0; i < code->ip - 1; i++)  fprintf(stdout, " ");
+
+    fprintf(stdout, " ^");
+    getchar();
 }
 
 void CleanLine(char * line, size_t size)
