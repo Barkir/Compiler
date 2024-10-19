@@ -6,6 +6,8 @@
 #include "hash.h"
 
 const size_t DEF_SIZE = 100;
+const size_t HEADER_SIZE = 2;
+const size_t RAM_SIZE = 4096;
 
 enum compile_errors
 {
@@ -14,30 +16,32 @@ enum compile_errors
     ALLOCATE_MEMORY_ERROR
 };
 
+// do push with byte operations (header byte for push)
+
 enum compile_instruction
 {
-    PUSH = 1,
-    POP = 2,
-    ADD = 3,
-    SUB = 4,
-    DIV = 5,
-    MUL = 6,
-    SQRT = 7,
-    SIN = 8,
-    COS = 9,
-    DUMP = 10,
-    IN = 11,
-    OUT = 12,
-    JMP = 13,
-    JA = 14,
-    JAE = 15,
-    JB = 16,
-    JBE = 17,
-    JE = 18,
-    JNE = 19,
-    PUSHR = 20,
-    POPR = 21,
-    HLT = -1
+    CMD_PUSH = 1,
+    CMD_POP = 2,
+    CMD_ADD = 3,
+    CMD_SUB = 4,
+    CMD_DIV = 5,
+    CMD_MUL = 6,
+    CMD_SQRT = 7,
+    CMD_SIN = 8,
+    CMD_COS = 9,
+    CMD_DUMP = 10,
+    CMD_IN = 11,
+    CMD_OUT = 12,
+    CMD_JMP = 13,
+    CMD_JA = 14,
+    CMD_JAE = 15,
+    CMD_JB = 16,
+    CMD_JBE = 17,
+    CMD_JE = 18,
+    CMD_JNE = 19,
+    CMD_PUSHR = 20,
+    CMD_POPR = 21,
+    CMD_HLT = -1
 };
 
 enum reg
@@ -52,22 +56,35 @@ enum reg
     RX = 8
 };
 
-struct asm_code
+struct spu
 {
     Stack stk;
-    double * asm_arr;
-    size_t asm_size;
+    double * array;
+    size_t size; // void *
     size_t ip;
 
+    double * RAM;
     double reg[10];
+
 };
 
 
 
 
 int Compile(const char * InFileName, const char * OutFileName);
-int CommandToEnum(char * command);
 int RunProgram(const char * RunFileName);
+
+
+void JmpAnalyzeCompiler(spu * code, const char * command);
+void JmpAnalyzeRun(int cmd, spu * code);
+
+int PushAnalyzeCompiler(spu * code, const char * command);
+int PushAnalyzeRun(spu * code);
+double GetArgPush(spu * code);
+
+void AsmDump(spu * code);
+
+int CommandToEnum(char * command);
 void CleanLine(char * line, size_t size);
 
 #endif
