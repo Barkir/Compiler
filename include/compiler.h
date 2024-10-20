@@ -13,7 +13,14 @@ enum compile_errors
 {
     SUCC,
     FILE_OPEN_ERROR,
-    ALLOCATE_MEMORY_ERROR
+    ALLOCATE_MEMORY_ERROR,
+    SIZE_ERROR
+};
+
+enum cmd_options
+{
+    COMPILE,
+    RUN
 };
 
 // do push with byte operations (header byte for push)
@@ -86,5 +93,7 @@ void AsmDump(spu * code);
 
 int CommandToEnum(char * command);
 void CleanLine(char * line, size_t size);
+
+int ProcessCmd(int argc, char * argv[]);
 
 #endif

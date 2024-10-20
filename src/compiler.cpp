@@ -12,10 +12,10 @@ int Compile(const char * InFileName, const char * OutFileName)
 {
     struct stat In;
 
-    FILE * InFile = fopen(InFileName, "rb");
+    FILE * InFile = fopen(InFileName, "rb+");
     if (ferror(InFile)) return FILE_OPEN_ERROR;
 
-    FILE * OutFile = fopen(OutFileName, "wb");
+    FILE * OutFile = fopen(OutFileName, "wb+");
     if (ferror(OutFile)) return FILE_OPEN_ERROR;
 
     stat(InFileName, &In);
@@ -151,8 +151,8 @@ int RunProgram(const char * RunFileName)
     spu code = {};
 
     stat(RunFileName, &Run);
+    if ((code.size = Run.st_size) == 0) return SIZE_ERROR;
 
-    code.size = Run.st_size;
     code.array = (double*) calloc(code.size, 1);
     code.RAM = (double*) calloc(RAM_SIZE, sizeof(double));
     fread(code.array, code.size, sizeof(double), RunFile);
@@ -281,6 +281,8 @@ int RunProgram(const char * RunFileName)
     code.array -= HEADER_SIZE;
     free(code.array);
     fclose(RunFile);
+
+    return SUCCESS;
 }
 
 int JmpAnalyzeCompiler(spu * code, const char * command)
@@ -537,5 +539,11 @@ int CommandToEnum(char * command)
 }
 
 
+int ProcessCmd(int argc, char * argv[])
+{
+    if (argc == 3 && (strcmp("run", argv[1]) == 0))     return RUN;
+    if (argc == 4 && (strcmp("asm", argv[1]) == 0))     return COMPILE;
+    return -fprintf(stderr, "Cmd Not Processed!\n");
+}
 
 
