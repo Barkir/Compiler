@@ -8,22 +8,25 @@
 const size_t DEF_SIZE = 100;
 const size_t HEADER_SIZE = 2;
 const size_t RAM_SIZE = 4096;
+const size_t DEF_STK_SIZE = 16;
 
 enum compile_errors
 {
     SUCC,
     FILE_OPEN_ERROR,
     ALLOCATE_MEMORY_ERROR,
-    SIZE_ERROR
+    SIZE_ERROR,
+    COMPILE_ERROR,
+    RUN_ERROR
 };
 
 enum cmd_options
 {
-    COMPILE,
-    RUN
+    CMD_COMPILE,
+    CMD_DEF_COMPILE,
+    CMD_RUN,
+    CMD_DEFAULT
 };
-
-// do push with byte operations (header byte for push)
 
 enum compile_instruction
 {
@@ -81,19 +84,6 @@ struct spu
 int Compile(const char * InFileName, const char * OutFileName);
 int RunProgram(const char * RunFileName);
 
-
-int JmpAnalyzeCompiler(spu * code, const char * command);
-int JmpAnalyzeRun(spu * code);
-
-int PushAnalyzeCompiler(spu * code, const char * command);
-int PushAnalyzeRun(spu * code);
-double GetArgPush(spu * code);
-
 void AsmDump(spu * code);
-
-int CommandToEnum(char * command);
-void CleanLine(char * line, size_t size);
-
-int ProcessCmd(int argc, char * argv[]);
 
 #endif

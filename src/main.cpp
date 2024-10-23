@@ -15,13 +15,15 @@ int main(int argc, char * argv[])
 {
     switch (ProcessCmd(argc, argv))
     {
-        case RUN:
-            RunProgram("compiled.o");
-            break;
-        case COMPILE:
-            Compile(argv[2], argv[3]);
-            return fprintf(stderr, "Compiled!\n");
-            break;
+        case CMD_RUN:
+            RunProgram(argv[2]);
+            return fprintf(stderr, "Success!\n");
+        case CMD_COMPILE:
+            if (Compile(argv[2], argv[3]) == SUCCESS) return fprintf(stderr, "Compiled!\n");
+            return -1;
+        case CMD_DEF_COMPILE:
+            if (Compile(argv[2], "compiled.o") == SUCCESS) return fprintf(stderr, "Compiled!\n");
+            return -1;
         default:
             break;
     }
