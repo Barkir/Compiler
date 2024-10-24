@@ -1,4 +1,4 @@
-BIN=proc_bin
+BIN=bin/proc_bin
 SRC=src/src_processor
 INCLUDE=include
 

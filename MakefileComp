@@ -1,4 +1,4 @@
-BIN=comp_bin
+BIN=bin/comp_bin
 SRC=src/src_compiler
 INCLUDE=include
 

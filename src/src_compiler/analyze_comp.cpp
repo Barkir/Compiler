@@ -149,7 +149,7 @@ int JmpAnalyzeCompiler(spu * code, const char * command)
 
     else
     {
-        sscanf(command, "%s, %s", func, label);
+        sscanf(command, "%s %s", func, label);
         code->array[code->ip++] = CommandToEnum(func);
         code->array[code->ip++] = LabelFind(label);
 
@@ -161,6 +161,7 @@ int LabelAnalyzeCompiler(spu * code, char * label)
 {
     for (int i = 0; i < DEF_SIZE; i++)
     {
+        if (strcmp(Labels->name, label) == 0) break;
         if (Labels[i].name[0] == 0)
         {
             sscanf(label, "%s", Labels[i].name);

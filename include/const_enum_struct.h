@@ -17,7 +17,7 @@ enum compile_errors
     COMPILE_ERROR = -35,
     RUN_ERROR = -36,
     LABELS_OVERFLOW = -37,
-    LABEL_FIND_ERROR = 38
+    LABEL_FIND_ERROR = -38
 };
 
 enum cmd_options
