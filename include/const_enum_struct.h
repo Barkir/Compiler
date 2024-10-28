@@ -3,33 +3,50 @@
 
 #include "stack.h"
 
+struct Spu
+{
+    Stack stk;
+    Stack func_stk;
+
+    double * array;
+    size_t size; // void *
+    size_t ip;
+
+    double * RAM;
+    double reg[10];
+
+};
+
 const size_t DEF_SIZE = 100;
 const size_t HEADER_SIZE = 2;
 const size_t RAM_SIZE = 4096;
 const size_t DEF_STK_SIZE = 16;
+const size_t FUNC_NUM = 25;
 
 enum compile_errors
 {
     SUCC = 0,
     FILE_OPEN_ERROR = -32,
-    ALLOCATE_MEMORY_ERROR = -33,
-    SIZE_ERROR = -34,
-    COMPILE_ERROR = -35,
-    RUN_ERROR = -36,
-    LABELS_OVERFLOW = -37,
-    LABEL_FIND_ERROR = -38
+    FILE_READ_ERROR = -33,
+    ALLOCATE_MEMORY_ERROR = -34,
+    SIZE_ERROR = -35,
+    COMPILE_ERROR = -36,
+    RUN_ERROR = -37,
+    LABELS_OVERFLOW = -38,
+    LABEL_FIND_ERROR = -39
 };
 
-enum cmd_options
-{
-    CMD_COMPILE,
-    CMD_DEF_COMPILE,
-    CMD_RUN,
-    CMD_DEFAULT
-};
+// enum cmd_options
+// {
+//     CMD_COMPILE,
+//     CMD_DEF_COMPILE,
+//     CMD_RUN,
+//     CMD_DEFAULT
+// };
 
 enum compile_instruction
 {
+    CMD_DEFAULT = 0,
     CMD_PUSH = 1,
     CMD_POP = 2,
     CMD_ADD = 3,
@@ -50,7 +67,10 @@ enum compile_instruction
     CMD_JE = 18,
     CMD_JNE = 19,
     CMD_LABEL = 20,
-    CMD_HLT = -1
+    CMD_CALL = 21,
+    CMD_RET = 22,
+    CMD_HLT = 23,
+    CMD_EMPTY = 24
 };
 
 enum reg
@@ -63,18 +83,6 @@ enum reg
     FX = 6,
     GX = 7,
     RX = 8
-};
-
-struct spu
-{
-    Stack stk;
-    double * array;
-    size_t size; // void *
-    size_t ip;
-
-    double * RAM;
-    double reg[10];
-
 };
 
 #endif
