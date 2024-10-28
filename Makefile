@@ -1,3 +1,3 @@
 all:
-	make -f MakefileProc
-	make -f MakefileComp
+	make -f ./MakefileProc
+	make -f ./MakefileComp

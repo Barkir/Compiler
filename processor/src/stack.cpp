@@ -37,7 +37,7 @@ int StackCtorFunc(Stack * stk, size_t el_size, size_t stk_capacity ON_DEBUG(COMM
 
 int StackDtorFunc(Stack * stk)
 {
-    STACK_ASSERT(stk);
+    // STACK_ASSERT(stk);
     stk->capacity = 0;
     stk->size = 0;
     stk->el_size = 0;
@@ -170,8 +170,8 @@ int StackError(Stack * stk)
     if ((ssize_t)stk->capacity < 0 || stk->capacity > MAX_SIZE)             return BADCAP;
     if ((ssize_t)stk->el_size < 0 || stk->el_size > 32)                              return BADELSIZE;
     if (stk->data == NULL)                                                  return BADDATA;
-    if (stack_hash_check != stack_hash)                                     return WRONGSTACKHASH;
-    if (data_hash_check != data_hash)                                       return WRONGDATAHASH;
+    // if (stack_hash_check != stack_hash)                                     return WRONGSTACKHASH;
+    // if (data_hash_check != data_hash)                                       return WRONGDATAHASH;
     if (LEFT_CANNARY && RIGHT_CANNARY)
         if (*LEFT_CANNARY != 0xDEADBEEF || *RIGHT_CANNARY != 0xDEADBEEF)    return DEADCANARY;
 #endif

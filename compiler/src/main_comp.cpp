@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "compiler.h"
 #include "const_enum_struct.h"
+#include "compiler.h"
 
 int main (int argc, char * argv[])
 {
@@ -14,7 +14,7 @@ int main (int argc, char * argv[])
 
         case 3:
             if((error = Compile(argv[1], argv[2])) != SUCC) return error;
-            return fprintf(stderr, "Your processor file is generated (%s)", argv[2]);
+            return fprintf(stderr, "Your processor file is generated (%s)\n", argv[2]);
 
         default:
             return -fprintf(stderr, "To compile: <.out> <infile (.asm)> <outfile (.out)>\n");

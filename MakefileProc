@@ -1,20 +1,20 @@
-BIN=bin/proc_bin
-SRC=src/src_processor
-INCLUDE=include
+BIN=./processor/bin
+SRC=./processor/src
+INCLUDE=./include
 
 SOURCES=$(notdir $(foreach dir,$(SRC),$(wildcard $(dir)/*.cpp)))
 TARGET=$(addprefix $(BIN)/,$(shell basename `pwd`))
 OBJECTS=$(addprefix $(BIN)/,$(SOURCES:.cpp=.o))
-EXECUTABLE = comp
+EXECUTABLE = Processor
 CFLAGS= -I -Wall \
     -pedantic -pedantic-errors -g3 -lm $(addprefix -I,$(INCLUDE))
 LDFLAGS= -lm
 
 vpath %.cpp $(SRC)
 
-all: $(TARGET)
+all: $(BIN)/$(EXECUTABLE)
 
-$(TARGET): $(OBJECTS)
+$(BIN)/$(EXECUTABLE): $(OBJECTS)
 	$(LINK.o) $^ $(OUTPUT_OPTION) $(LDFLAGS)
 
 $(BIN)/%.o: %.cpp
