@@ -408,6 +408,7 @@ int RetAnalyzeCompiler(Spu * code, const char * command)
     return CMD_RET;
 }
 
+<<<<<<< HEAD
 int ShowAnalyzeCompiler(Spu * code, const char * command)
 {
     code->array[code->ip++] = CMD_SHOW;
@@ -425,6 +426,8 @@ int LoadAnalyzeCompiler(Spu * code, const char * command)
         code->array[code->ip++] = (double) filename[i];
 }
 
+=======
+>>>>>>> parent of f62a21a (videomemory(badapple.mp4))
             // Empty Analyzer
 
 int EmptyAnalyzeCompiler(Spu * code, const char * command)

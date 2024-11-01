@@ -41,8 +41,6 @@ int RetAnalyzeCompiler(Spu * code, const char * command);
 int DumpAnalyzeCompiler(Spu * code, const char * command);
 int HltAnalyzeCompiler(Spu * code, const char * command);
 int EmptyAnalyzeCompiler(Spu * code, const char * command);
-int ShowAnalyzeCompiler(Spu * code, const char * command);
-int LoadAnalyzeCompiler(Spu * code, const char * command);
 
                 // Label Analyzers
 

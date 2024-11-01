@@ -39,8 +39,6 @@ int CommandToEnum(const char * command)
     if (strcmp(command, "ret")  == 0)           return CMD_RET;
     if (strcmp(command, "dump") == 0)           return CMD_DUMP;
     if (strcmp(command, "hlt")  == 0)           return CMD_HLT;
-    if (strcmp(command, "show") == 0)           return CMD_SHOW;
-    if (strcmp(command, "load") == 0)           return CMD_LOAD;
 
                         // Empty
 
