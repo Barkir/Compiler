@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include "const_enum_struct.h"
 #include "analyze_proc.h"
 #include "proc_struct_func.h"
-#include "labels.h"
-#include "sys/stat.h"
 
             // Main Analyzer
 
@@ -318,6 +316,7 @@ int InAnalyzeRun(Spu * code)
     double val = 0;
     BEGIN_CHECK
     scanf("%lg", &val);
+    // fprintf(stderr, "Hello");
     STACK_PUSH(&code->stk, &val);
     code->ip++;
     return CMD_IN;
@@ -354,20 +353,26 @@ int DumpAnalyzeRun(Spu * code)
 
 int ShowAnalyzeRun(Spu * code)
 {
-    int r = 0, g = 0, b = 0, a = 0;
     struct stat vid = {};
-
     FILE * video = fopen("output.raw", "rb");
     stat("output.raw", &vid);
-    while (vid.st_size > RAM_SIZE) RAM_SIZE *= 2;
-    char * check = (char*) realloc(code->RAM, RAM_SIZE);
+
+
+    while (vid.st_size > RAM_SIZE)
+    {
+        RAM_SIZE *= 2;
+    }
+    char * check = (char *) realloc(code->RAM, RAM_SIZE);
     if (!check) return ALLOCATE_MEMORY_ERROR;
     code->RAM = (double *) check;
+    unsigned char * frame = (unsigned char *) calloc(FRAME_SIZE * 2, sizeof(char));
+    if (!frame) return ALLOCATE_MEMORY_ERROR;
+    int r = 0, g = 0, b = 0, a = 0;
 
-    unsigned char * frame = (unsigned char* ) calloc(FRAME_SIZE * 2, sizeof(char));
-    fread(code->RAM, sizeof(char), vid.st_size, video);
-    char * RAM = (char * ) code->RAM;
 
+    fread(code->RAM, sizeof(char), RAM_SIZE, video);
+    char * RAM = (char*) code->RAM;
+    fprintf(stderr, "helelll");
     for (int i = 0; i < vid.st_size - 4; i+=4)
     {
         b = RAM[i];
@@ -401,27 +406,25 @@ int ShowAnalyzeRun(Spu * code)
     printf("\n");
     free(frame);
 
-    code->ip++;
     return CMD_SHOW;
 }
 
 int LoadAnalyzeRun(Spu * code)
 {
-    struct stat In = {};
     char filename[100] = "";
     char command[300] = "";
-    code->ip++;
-    int chet = (int) code->array[code->ip];
-    for (int i = 0; i < chet; i++)
+    int filename_size = code->array[++code->ip];
+
+    for (int i = 0; i < filename_size; i++)
     {
         code->ip++;
-        filename[i] = (int) code->array[code->ip];
+        filename[i] = (char) code->array[code->ip];
     }
     sprintf(command, "ffmpeg -i %s -s 200x200 -vf format=gray -filter:v format=pix_fmts=bgra -vcodec rawvideo -f rawvideo - > output.raw", filename);
     FILE * video = popen(command, "r");
+
     code->ip++;
     return CMD_LOAD;
-
 }
 
             // Error Handling
