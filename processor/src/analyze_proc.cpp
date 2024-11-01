@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <sys/stat.h>
 #include <unistd.h>
+=======
+>>>>>>> parent of f62a21a (videomemory(badapple.mp4))
 
 #include "const_enum_struct.h"
 #include "analyze_proc.h"
@@ -351,6 +354,7 @@ int DumpAnalyzeRun(Spu * code)
     return CMD_DUMP;
 }
 
+<<<<<<< HEAD
 int ShowAnalyzeRun(Spu * code)
 {
     struct stat vid = {};
@@ -427,6 +431,8 @@ int LoadAnalyzeRun(Spu * code)
     return CMD_LOAD;
 }
 
+=======
+>>>>>>> parent of f62a21a (videomemory(badapple.mp4))
             // Error Handling
 
 int DefaultAnalyzeRun(Spu * code)

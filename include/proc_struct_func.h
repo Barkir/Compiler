@@ -32,11 +32,7 @@ static struct ProcessorFunction ProcFunc[FUNC_NUM]
     {   JneAnalyzeRun     },
     {                     },
     {   CallAnalyzeRun    },
-    {   RetAnalyzeRun     },
-    {                     },
-    {                     },
-    {   ShowAnalyzeRun    },
-    {   LoadAnalyzeRun    }
+    {   RetAnalyzeRun     }
 };
 
 #endif

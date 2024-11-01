@@ -34,9 +34,7 @@ static struct CompilerFunction CompFunc[FUNC_NUM]
     {   CallAnalyzeCompiler    },
     {   RetAnalyzeCompiler     },
     {   HltAnalyzeCompiler     },
-    {   EmptyAnalyzeCompiler   },
-    {   ShowAnalyzeCompiler    },
-    {   LoadAnalyzeCompiler    }
+    {   EmptyAnalyzeCompiler   }
 };
 
 #endif
