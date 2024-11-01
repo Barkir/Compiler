@@ -408,6 +408,28 @@ int RetAnalyzeCompiler(Spu * code, const char * command)
     return CMD_RET;
 }
 
+int LoadAnalyzeCompiler(Spu * code, const char * command)
+{
+    char func[100] = "";
+    char file[100] = "";
+    sscanf(command, "%s %s", func, file);
+    if (file)
+    {
+        code->array[code->ip++] = CMD_LOAD;
+        code->array[code->ip++] = strlen(file);
+    }
+
+    for (int i = 0; i < strlen(file); i++)
+        code->array[code->ip++] = file[i];
+    return CMD_LOAD;
+}
+
+int ShowAnalyzeCompiler(Spu * code, const char * command)
+{
+    code->array[code->ip++] = CMD_SHOW;
+    return CMD_SHOW;
+}
+
             // Empty Analyzer
 
 int EmptyAnalyzeCompiler(Spu * code, const char * command)

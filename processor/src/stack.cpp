@@ -44,7 +44,7 @@ int StackDtorFunc(Stack * stk)
 
     stk->data = (void*)((size_t) stk->data - CannarySize);
     free(stk->data);
-    fprintf(stderr, "Stack Terminated!\n");
+    // fprintf(stderr, "Stack Terminated!\n");
     return SUCCESS;
 }
 

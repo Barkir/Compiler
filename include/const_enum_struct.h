@@ -19,9 +19,10 @@ struct Spu
 
 const size_t DEF_SIZE = 100;
 const size_t HEADER_SIZE = 2;
-const size_t RAM_SIZE = 4096;
 const size_t DEF_STK_SIZE = 16;
-const size_t FUNC_NUM = 25;
+const size_t FUNC_NUM = 27;
+static size_t RAM_SIZE = 4096;
+const int FRAME_SIZE = 200 * 200;
 
 enum compile_errors
 {
@@ -33,7 +34,8 @@ enum compile_errors
     COMPILE_ERROR = -36,
     RUN_ERROR = -37,
     LABELS_OVERFLOW = -38,
-    LABEL_FIND_ERROR = -39
+    LABEL_FIND_ERROR = -39,
+    FILES_OVERFLOW = -40
 };
 
 // enum cmd_options
@@ -70,7 +72,9 @@ enum compile_instruction
     CMD_CALL = 21,
     CMD_RET = 22,
     CMD_HLT = 23,
-    CMD_EMPTY = 24
+    CMD_EMPTY = 24,
+    CMD_SHOW = 25,
+    CMD_LOAD = 26
 };
 
 enum reg

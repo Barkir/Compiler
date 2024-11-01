@@ -18,7 +18,7 @@ int RunProgram(const char * RunFileName)
     if ((code.size = Run.st_size) == 0) return SIZE_ERROR;
 
     if (!(code.array  = (double*) calloc(code.size, 1))) return ALLOCATE_MEMORY_ERROR;
-    if (!(code.RAM    = (double*) calloc(RAM_SIZE, sizeof(double)))) return ALLOCATE_MEMORY_ERROR; // nullptr
+    if (!(code.RAM    = (double*) calloc(RAM_SIZE, sizeof(double)))) return ALLOCATE_MEMORY_ERROR;
 
     fread(code.array, code.size, sizeof(double), RunFile);
     if (ferror(RunFile)) return FILE_READ_ERROR;
