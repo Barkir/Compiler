@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-<<<<<<< HEAD
 #include <sys/stat.h>
 #include <unistd.h>
-=======
->>>>>>> parent of f62a21a (videomemory(badapple.mp4))
 
 #include "const_enum_struct.h"
 #include "analyze_proc.h"
@@ -354,7 +351,6 @@ int DumpAnalyzeRun(Spu * code)
     return CMD_DUMP;
 }
 
-<<<<<<< HEAD
 int ShowAnalyzeRun(Spu * code)
 {
     struct stat vid = {};
@@ -371,29 +367,13 @@ int ShowAnalyzeRun(Spu * code)
     code->RAM = (double *) check;
     unsigned char * frame = (unsigned char *) calloc(FRAME_SIZE * 2, sizeof(char));
     if (!frame) return ALLOCATE_MEMORY_ERROR;
-    int r = 0, g = 0, b = 0, a = 0;
-
 
     fread(code->RAM, sizeof(char), RAM_SIZE, video);
     char * RAM = (char*) code->RAM;
-    fprintf(stderr, "helelll");
     for (int i = 0; i < vid.st_size - 4; i+=4)
     {
-        b = RAM[i];
-        g = RAM[i + 1];
-        r = RAM[i + 2];
-        a = RAM[i + 3];
+        frame[(i / 4) % (FRAME_SIZE * 2)] = bgra2char(RAM + i);
 
-        if (r == 0 && g == 0 && b == 0)
-        {
-            frame[(i / 4) % (FRAME_SIZE * 2)] = 'M';
-            frame[((i / 4) % (FRAME_SIZE * 2)) + 1] = 'M';
-        }
-        else
-        {
-            frame[(i / 4) % (FRAME_SIZE * 2)] = ' ';
-            frame[((i / 4) % (FRAME_SIZE * 2)) + 1] = ' ';
-        }
         if ((i / 4) % 200 == 0)
         {
             frame[(i / 4) % (FRAME_SIZE * 2)] = '\n';
@@ -401,7 +381,7 @@ int ShowAnalyzeRun(Spu * code)
         if ((i / 4) % (FRAME_SIZE * 2) == 0)
         {
             system("clear");
-            printf("\n\n\n\n\n\n\n\n");
+            printf("\033[999;999H\033[6n\n");
             printf("%s", frame);
             usleep(60000);
             system("clear");
@@ -430,13 +410,25 @@ int LoadAnalyzeRun(Spu * code)
     code->ip++;
     return CMD_LOAD;
 }
-
-=======
->>>>>>> parent of f62a21a (videomemory(badapple.mp4))
             // Error Handling
 
 int DefaultAnalyzeRun(Spu * code)
 {
     fprintf(stderr, "Wrong command on ip %d - %lg\n", code->ip, code->array[code->ip]);
     return RUN_ERROR;
+}
+
+int bgra2char(char * x)
+{
+    unsigned int b = x[0] / 3, g = x[1] / 2, r = x[2] / 4;
+    if (b + g + r < 20) return ' ';
+    if (b + g + r < 50) return '.';
+    if (b + g + r < 100) return '/';
+    if (b + g + r < 150) return ';';
+    if (b + g + r < 200) return 'g';
+    if (b + g + r < 250) return 'H';
+    if (b + g + r < 300) return '$';
+    if (b + g + r < 350) return 'O';
+    if (b + g + r < 400) return 'X';
+    return '#';
 }

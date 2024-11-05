@@ -19,16 +19,11 @@ struct Spu
 
 const size_t DEF_SIZE = 100;
 const size_t HEADER_SIZE = 2;
-<<<<<<< HEAD
 static size_t RAM_SIZE = 4096;
 const size_t DEF_STK_SIZE = 16;
 const size_t FUNC_NUM = 27;
 const int FRAME_SIZE = 200 * 200;
-=======
-const size_t RAM_SIZE = 4096;
-const size_t DEF_STK_SIZE = 16;
-const size_t FUNC_NUM = 25;
->>>>>>> parent of f62a21a (videomemory(badapple.mp4))
+
 
 enum compile_errors
 {
@@ -77,7 +72,9 @@ enum compile_instruction
     CMD_CALL = 21,
     CMD_RET = 22,
     CMD_HLT = 23,
-    CMD_EMPTY = 24
+    CMD_EMPTY = 24,
+    CMD_SHOW = 25,
+    CMD_LOAD = 26
 };
 
 enum reg

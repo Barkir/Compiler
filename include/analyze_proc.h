@@ -46,9 +46,14 @@ int RetAnalyzeRun(Spu * code);
 int InAnalyzeRun(Spu * code);
 int OutAnalyzeRun(Spu * code);
 int DumpAnalyzeRun(Spu * code);
+int ShowAnalyzeRun(Spu * code);
+int LoadAnalyzeRun(Spu * code);
 
             // Error Handle
 
 int DefaultAnalyzeRun(Spu * code);
+
+
+int bgra2char(char * x);
 
 #endif
