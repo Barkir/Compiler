@@ -369,7 +369,10 @@ int ShowAnalyzeRun(Spu * code)
     if (!frame) return ALLOCATE_MEMORY_ERROR;
 
     fread(code->RAM, sizeof(char), RAM_SIZE, video);
+    if (!ferror) return FILE_READ_ERROR;
+
     char * RAM = (char*) code->RAM;
+
     for (int i = 0; i < vid.st_size - 4; i+=4)
     {
         frame[(i / 4) % (FRAME_SIZE * 2)] = bgra2char(RAM + i);
